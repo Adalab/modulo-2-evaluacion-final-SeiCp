@@ -23,8 +23,16 @@ fetch (url)
     console.log (products)
     
     for (let product of products) {
-        listaUl.innerHTML += `<li class="product_card">
-        <img src= ${product.image} />
+        let imageURL;
+
+        if (!product.image){
+            imageURL = "https://placehold.co/600x400";
+        }else {
+            imageURL = product.image;
+        }
+
+        listaUl.innerHTML += `<li class="product-card">
+        <img src= "${product.image}" alt= ${product.title}/>
         <p> ${product.title}</p>
         <p> ${product.price}</p>
         </li>`; 

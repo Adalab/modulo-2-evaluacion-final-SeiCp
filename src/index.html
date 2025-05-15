@@ -12,16 +12,29 @@
 
 <body>
 
-  <h1>Online Store</h1>
-  <section>
-    <input type="text" placeholder="Buscar producto...">
-    <button>Buscar</button>
+  <section class="buscador">
+    <h1 class="buscador__titulo">Sei Store</h1>
+    <form class="buscador__form">
+      <input class="buscador__input" type="text" placeholder="Excample: Women">
+      <button class="buscador__btn">Find</button>
+    </form>
   </section>
 
-  <ul class="js-listado"></ul>
+  <main class="layout">
+    <aside class="carrito js-carrito-container hidden">
+      <h2 class="carrito__titulo">Carrito de la compra</h2>
+      <ul class="carrito__lista js-carrito"></ul>
+    </aside>
 
+    <section class="productos">
+      <h2 class="productos__titulo">Nuestros productos más popus</h2>
+      <ul class="js-listado listado"></ul>
+    </section>
+
+  </main>
 
   <script src="./js/main.js"></script>
+
 </body>
 
 </html>
