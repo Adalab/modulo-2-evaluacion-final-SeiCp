@@ -3,12 +3,10 @@
 const listaUl = document.querySelector(".js-listado"); 
 const input = document.querySelector(".js-input")
 const btnFind = document.querySelector(".js-btn-form")
-const btnComprar = document.querySelector(".js-btnComprar")
 const carrito = [];
+let allProducts = [];
 
 console.log('>> Ready :)');
-
-let url = "https://raw.githubusercontent.com/Adalab/resources/master/apis/products.json";
 
 //funciones (del infierno)
 
@@ -23,73 +21,83 @@ function renderProduct(product){
         imageURL = product.image;
     }
 
-  return `
-    <li class="js_producto_solo product-card" id="${product.id}">
-      <img src="${imageURL}" alt="${product.title}" />
-      <p>${product.title}</p>
-      <p>${product.price}</p>
-      <button class="product-card__btn">Comprar</button>
-    </li>
-  `;
-
-}
+    listaUl.innerHTML += 
+        `<li class="product-card" id="${product.id}">
+            <img src="${imageURL}" alt="${product.title}" />
+            <p>${product.title}</p>
+            <p>${product.price}</p>
+            <button class="js-btn-comprar product-card__btn" id="${product.id}">Comprar</button>
+         </li>`;
+        }
 
 //Estamos haciendo click en comprar de cada producto
 function handleClickComprar(event){
     console.log(event.currentTarget.id); //ID del botón clicado
-
-    let idClick = event.currentTarget.id; //Devuelve un "string" y necesitamos un número
     
     const id = parseInt(event.currentTarget.id); //lo convertimos a número
 
-    //Añadir al carrito
-    let productClick = allProducts.find(productItem => productItem.id === idClick);
+    const productClick = allProducts.find(productItem => productItem.id === id);
     
+    //Añadir al carrito
     carrito.push(productClick); 
+    renderCarrito();
+
+    //Seleccionamos la UL del carrito
+
+    const carritoUl = document.querySelector(".js-carrito")
 
     //Queremos que nos pinte los productos en el carrito
-        for (let product of carrito) {
-         
-            let imageURL;
+   //Sustituir imagen si no hay
+    let imageURL;
 
-                if (!product.image) {
-                imageURL = "https://placehold.co/600x400";
-                } else {
-                imageURL = product.image;
-            }
-
-            return `
-                <li class="js_producto_solo product-card" id="${product.id}">
-                    <img src="${imageURL}" alt="${product.title}" />
-                    <p>${product.title}</p>
-                    <p>${product.price}</p>
-                    <button class="product-card__btn">Comprar</button>
-                </li>
-            `;
+    if (!productClick.image) {
+        imageURL = "https://placehold.co/600x400";
+        } else {
+        imageURL = productClick.image;
     }
 
-    
+    carritoUl.innerHTML += `
+        <li class="product-card">
+        <img src="${imageURL}" alt="${productClick.title}" />
+        <p>${productClick.title}</p>
+        <p>${productClick.price} €</p>
+        <button class="product-card__btn">Eliminar</button>
+        </li>`;
+ }
 
-}
-
-//function renderCarrito ()
+ function renderCarrito() {
+    const carritoUl = document.querySelector(".js-carrito");
+    carritoUl.innerHTML = "";
+  
+    for (const product of carrito) {
+      carritoUl.innerHTML += `
+        <li class="carrito__item">
+          <p>${product.title}</p>
+          <p>${product.price} €</p>
+        </li>
+      `;
+    }
+  
+    // Mostramos el aside si estaba oculto
+    const carritoContainer = document.querySelector(".js-carrito-container");
+    carritoContainer.classList.remove("hidden");
+  }
 
 //función de toda la lista de productos
-function renderProductos (listaProductos) {
+function renderProductos(listaProductos) {
 
-    listaUl.innerHTML = "";
+    listaUl.innerHTML = "";//Limpia la lista
 
     for (let product of listaProductos) {
-        listaUl.innerHTML += renderProduct(product);
+        renderProduct(product);
       }
 
-    const renderProductos = document.querySelectorAll(".js_producto_solo")
-    for(let product of renderProductos){
-        product.addEventListener("click", handleClickComprar)
+    const btnComprar = document.querySelectorAll(".js-btn-comprar")
+    
+    for(let btn of btnComprar){
+        btn.addEventListener("click", handleClickComprar)
     }
 }
-
-let allProducts = []; //variable global de todos los productos
 
 function handleClickFind(event){
     //Limpiamos el form para que no se autorecargue
@@ -103,14 +111,14 @@ function handleClickFind(event){
     console.log(productsFiltrados); 
     //Pintamos otra vez la función con los productos filtrados
     renderProductos(productsFiltrados);
-
 }
-
 
 btnFind.addEventListener("click", handleClickFind);
 
 
 //carga los datos de la API
+let url = "https://raw.githubusercontent.com/Adalab/resources/master/apis/products.json";
+
 fetch (url)
 .then(response =>response.json())
 .then(products => {
