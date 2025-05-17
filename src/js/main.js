@@ -3,8 +3,9 @@
 const listaUl = document.querySelector(".js-listado"); 
 const input = document.querySelector(".js-input")
 const btnFind = document.querySelector(".js-btn-form")
-const carrito = [];
-let allProducts = [];
+
+const carrito = []; //constante: porque no vamos a modificar el contenido--> carrito = otra cosa
+let allProducts = []; //array vacío, luego le ponemos contenido en el fetch
 
 console.log('>> Ready :)');
 
@@ -38,49 +39,60 @@ function handleClickComprar(event){
 
     const productClick = allProducts.find(productItem => productItem.id === id);
     
-    //Añadir al carrito
-    carrito.push(productClick); 
-    renderCarrito();
+    carrito.push(productClick); //Añadir al carrito
+    
+    renderCarrito(); //Pintamos el carito
 
     //Seleccionamos la UL del carrito
 
     const carritoUl = document.querySelector(".js-carrito")
 
-    //Queremos que nos pinte los productos en el carrito
-   //Sustituir imagen si no hay
-    let imageURL;
-
-    if (!productClick.image) {
-        imageURL = "https://placehold.co/600x400";
-        } else {
-        imageURL = productClick.image;
-    }
-
-    carritoUl.innerHTML += `
-        <li class="product-card">
-        <img src="${imageURL}" alt="${productClick.title}" />
-        <p>${productClick.title}</p>
-        <p>${productClick.price} €</p>
-        <button class="product-card__btn">Eliminar</button>
-        </li>`;
  }
+
+ function handleClickCerrar(event) {
+    const id = parseInt(event.currentTarget.id);
+  
+    const index = carrito.findIndex(product => product.id === id);
+    if (index !== -1) {
+      carrito.splice(index, 1); // eliminamos el producto del array
+      renderCarrito(); // volvemos a pintarlo
+    }
+  }
 
  function renderCarrito() {
     const carritoUl = document.querySelector(".js-carrito");
     carritoUl.innerHTML = "";
   
     for (const product of carrito) {
-      carritoUl.innerHTML += `
-        <li class="carrito__item">
-          <p>${product.title}</p>
-          <p>${product.price} €</p>
-        </li>
-      `;
+        let imageURL;
+
+        if (!product.image) {
+            imageURL = "https://placehold.co/600x400";
+            } else {
+            imageURL = product.image;
+        }
+    
+        carritoUl.innerHTML += `
+            <li class="product-card">
+            <p class="js-btn-cerrar product-card__x" id="${product.id}" >x</p> 
+            <img src="${imageURL}" alt="${product.title}" />
+            <p>${product.title}</p>
+            <p>${product.price}€</p>
+            <button class="product-card__btn--eliminar">Eliminar</button>
+            </li>`;
     }
   
     // Mostramos el aside si estaba oculto
     const carritoContainer = document.querySelector(".js-carrito-container");
-    carritoContainer.classList.remove("hidden");
+    carritoContainer.classList.remove("hidden"); 
+
+    //Añadimos el evento después de pintar/esconder el carrito
+    //Creamos la constante para los botones cerrar
+    const botonesCerrar = document.querySelectorAll(".js-btn-cerrar");
+
+        for (const btnCerrar of botonesCerrar) {
+            btnCerrar.addEventListener("click", handleClickCerrar);
+        }
   }
 
 //función de toda la lista de productos
@@ -119,10 +131,18 @@ btnFind.addEventListener("click", handleClickFind);
 //carga los datos de la API
 let url = "https://raw.githubusercontent.com/Adalab/resources/master/apis/products.json";
 
-fetch (url)
-.then(response =>response.json())
-.then(products => {
-    console.log(products)
-    allProducts = products;
-    renderProductos(products)
-})
+//guarfamos las cosas en localStorage para facilitar la carga de la página
+if (localStorage.getItem("productos") === null) {
+    // Si no hay productos guardados, los pido con fetch
+    fetch(url)
+      .then(response => response.json())
+      .then(products => {
+        allProducts = products; // guardo en variable global, la tengo arriba
+        localStorage.setItem("productos", JSON.stringify(products)); // y en localStorage
+        renderProductos(allProducts);
+      });
+  } else {
+    // Si ya hay productos guardados, los uso directamente
+    allProducts = JSON.parse(localStorage.getItem("productos"));
+    renderProductos(allProducts);
+  }

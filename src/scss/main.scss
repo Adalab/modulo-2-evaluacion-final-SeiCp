@@ -63,6 +63,18 @@
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgb(245, 187, 208);
+
+
+    &__item {
+        list-style: none;
+        background-color: #fff;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(218, 158, 248, 0.2);
+        text-align: center;
+    }
 }
 
 .hidden {
@@ -90,19 +102,11 @@
     list-style: none;
     width: 100%;
 
-    /*display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    padding: 0;
-    list-style: none;*/
-
 }
 
 .product-card {
+    position: relative;
     height: 400px;
-    /* o auto si usas flex internamente */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -113,15 +117,21 @@
     //gap: 10px;
     //padding-bottom: 10px;
 
-    /*width: 220px;
-    height: 400px;
-    padding: 1rem;
-    background-color: white;
-    box-shadow: 0 4px 12px rgba(158, 230, 248, 0.471);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;*/
+    &__x {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-weight: bold;
+        color: #555;
+        background-color: rgb(245, 187, 208);
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        line-height: 22px;
+        text-align: center;
+
+    }
 
     &__btn {
         width: 90px;
@@ -139,6 +149,21 @@
         //transition: background-color 0.3s;
         margin-bottom: 1rem;
     }
+
+    &__btn--eliminar {
+        background-color: rgb(238, 169, 218);
+        color: white;
+        font-weight: bold;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        padding-top: 0.5rem;
+        padding-right: 1.2rem;
+        padding-bottom: 10px;
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+    }
+
 }
 
 .product-card img {
