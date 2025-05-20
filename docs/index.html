@@ -4,22 +4,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Adalab Web Starter Kit</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/main-62015576.css">
+  <title>Online Store Seila Cuartero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="icon" href="./images/faviconShop.png" />
+  <link rel="stylesheet" href="./assets/index-a81605ea.css">
 </head>
 
 <body>
-  <header>
-    <h1>Bienvenidos a Adalab</h1>
-  </header>
-  <main>
+
+  <section class="buscador">
+    <img src="./images/logoShop2.png" class="buscador__img" alt="Logo The Girls & Boys Shop">
+    <form class="buscador__form">
+      <input class="js-input buscador__input" type="text" placeholder="Excample: Women">
+      <button class="js-btn-form buscador__btn">Find</button>
+    </form>
+  </section>
+
+  <main class="layout">
+    <aside class="js-carrito-container carrito hidden">
+      <h2 class="carrito__titulo">Carrito
+        <img src="./images/carritoBlanco.png" alt="Logo carrito compra" class="productos__logo">
+      </h2>
+      <ul class="js-carrito carrito__lista"></ul>
+    </aside>
+
+    <section class="productos">
+      <h2 class="productos__titulo">
+        Productos más popus
+        <img src="./images/LogoCarrito.png" alt="Logo carrito compra" class="productos__logo">
+      </h2>
+      <ul class="js-listado listado"></ul>
+    </section>
 
   </main>
 
-
-
   <script src="./js/main.js"></script>
+
 </body>
 
 </html>
