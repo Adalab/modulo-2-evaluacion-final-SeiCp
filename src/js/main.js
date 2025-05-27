@@ -3,6 +3,7 @@
 const listaUl = document.querySelector(".js-listado"); 
 const input = document.querySelector(".js-input")
 const btnFind = document.querySelector(".js-btn-form")
+const btnProductos = document.querySelector(".js-productos")
 
 const carrito = []; //constante: porque no vamos a modificar el contenido--> carrito = otra cosa
 let allProducts = []; //array vacío, luego le ponemos contenido en el fetch
@@ -27,15 +28,16 @@ function renderProduct(product){
             <img src="${imageURL}" alt="${product.title}" />
             <p>${product.title}</p>
             <p>${product.price}</p>
+            <p>${product.rating.rate}</p>
             <button class="js-btn-comprar product-card__btn" id="${product.id}">Comprar</button>
          </li>`;
         }
 
 //Estamos haciendo click en comprar de cada producto
 function handleClickComprar(event){
-    console.log(event.currentTarget.id); //ID del botón clicado
+    //console.log(event.currentTarget.id); //ID del botón clicado
     
-    const id = parseInt(event.currentTarget.id); //lo convertimos a número
+    const id = parseInt(event.currentTarget.id); //obtememos btn clickado y lo convertimos a número
 
     const productClick = allProducts.find(productItem => productItem.id === id);
     
@@ -45,16 +47,16 @@ function handleClickComprar(event){
 
     //Seleccionamos la UL del carrito
 
-    const carritoUl = document.querySelector(".js-carrito")
+   //const carritoUl = document.querySelector(".js-carrito") esto sobra, me he dado cuenta
 
  }
 
  function handleClickCerrar(event) {
-    const id = parseInt(event.currentTarget.id);
-  
+    const id = parseInt(event.currentTarget.id); 
     const index = carrito.findIndex(product => product.id === id);
-    if (index !== -1) {
-      carrito.splice(index, 1); // eliminamos el producto del array
+   
+    if (index !== -1) { //si el producto no existe en el array es =-1. para que no borre cosas que no quiero que borre
+      carrito.splice(index, 1); // Ve a la posición index (id=id) y elimina. Si encuentras eliminamos el producto del array
       renderCarrito(); // volvemos a pintarlo
     }
   }
@@ -91,7 +93,7 @@ function handleClickComprar(event){
     const botonesCerrar = document.querySelectorAll(".js-btn-cerrar");
 
         for (const btnCerrar of botonesCerrar) {
-            btnCerrar.addEventListener("click", handleClickCerrar);
+            btnCerrar.addEventListener("click", handleClickCerrar); //añadir la funcionalidad
         }
   }
 
@@ -100,7 +102,7 @@ function renderProductos(listaProductos) {
 
     listaUl.innerHTML = "";//Limpia la lista
 
-    for (let product of listaProductos) {
+    for (let product of listaProductos) { //pasa por todos los productos y pinta uno a uno
         renderProduct(product);
       }
 
@@ -125,7 +127,15 @@ function handleClickFind(event){
     renderProductos(productsFiltrados);
 }
 
+function handleClickNombre(event){
+    for (const product of carrito) {
+
+    console.log(product.title)
+}
+}
+
 btnFind.addEventListener("click", handleClickFind);
+btnProductos.addEventListener("click",handleClickNombre)
 
 
 //carga los datos de la API
